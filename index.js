@@ -34,9 +34,29 @@ app.get('/multipleRecords', async (req, res) => {
             favouriteFoods: ["Pizza", "Burger", "Fries"]
         },
         {
-            name: "Bob", 
+            name: "Mr David", 
             age: 30, 
             favouriteFoods: ["Pasta", "Salad", "Chicken"]
+        },
+        {
+            name: "Bassy", 
+            age: 20, 
+            favouriteFoods: ["Pasta", "Salad", "Fish"]
+        },
+        {
+            name: "Augustine", 
+            age: 35, 
+            favouriteFoods: ["Rice", "Salad", "Chicken"]
+        },
+        {
+            name: "json", 
+            age: 40, 
+            favouriteFoods: ["Pasta", "beans", "Chicken"]
+        },
+        {
+            name: "Kolawole", 
+            age: 35, 
+            favouriteFoods: ["Sushi", "Salad", "Chicken"]
         },
         {
             name: "Charlie", 
@@ -106,6 +126,27 @@ app.get('/deleteMany', async (req, res) => {
     res.json(deleteMany);
 
 })
+
+
+// Chain Search Query Helpers to Narrow Search Results
+// Find people who like burritos. Sort them by name, limit the results to two documents, and hide their age. Chain .find(), .sort(), .limit(), .select(), and then .exec(). Pass the done(err, data) callback to exec().
+
+// Question 10
+app.get('/chainSearch', async (req, res, done) => {
+    const chainSearch = await User.find({ favouriteFoods: 'Chicken' })
+    .sort({ name: 1 })
+    .limit(2)
+    .select('-age')
+    .exec()
+    .then((data) => {
+            console.log(data);
+            res.json(data);
+        })
+
+    .catch((err) => {
+        console.error(err);
+    })
+});
 
 app.listen(4003, ()=>{
     console.log("Server is running on port 4003");
